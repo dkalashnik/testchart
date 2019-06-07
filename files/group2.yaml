@@ -1,0 +1,4 @@
+alerts:
+  glance:
+    test: 123123
+    nottest: asdasdasdasd

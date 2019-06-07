@@ -1,0 +1,4 @@
+alerts:
+  nova:
+    test: 1
+    nottest: qwerty
