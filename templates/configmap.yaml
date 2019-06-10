@@ -11,8 +11,9 @@ data:
   - name: {{ $service -}}
     rules:
       {{- range $alertname, $alertvalues := $attrib }}
+        {{ $override := index $.Values.alerts $service $alertname}}
     - alert: {{ $alertname -}}
-        {{ $alertvalues | toYaml | nindent 6 -}}
+        {{ merge $override $alertvalues | toYaml | nindent 6 -}}
       {{- end }}
     {{- end }}
   {{- end }}

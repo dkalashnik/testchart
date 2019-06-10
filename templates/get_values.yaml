@@ -4,5 +4,5 @@ metadata:
   name: {{ .Release.Name }}-configmap
 data:
   {{- $service := "etcd" }}
-  {{- $alertname := "KubeVersionMismatch" }}
-  {{ index .Values.alerts "$service" "$alertname"}}
+  {{- $alertname := "etcdInsufficientMembers" }}
+  {{ index .Values.alerts $service $alertname | toYaml}}

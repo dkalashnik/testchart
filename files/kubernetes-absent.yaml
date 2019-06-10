@@ -1,0 +1,18 @@
+alerts:
+  kubernetes-absent:
+    AlertmanagerDown:
+      annotations:
+        message: Alertmanager has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-alertmanagerdown
+      expr: absent(up{job="{{ $alertmanagerJob }}",namespace="{{ $namespace }}"} == 1)
+      for: 15m
+      labels:
+        severity: critical
+    CoreDNSDown:
+      annotations:
+        message: CoreDNS has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-corednsdown
+      expr: absent(up{job="kube-dns"} == 1)
+      for: 15m
+      labels:
+        severity: critical

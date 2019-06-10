@@ -8,3 +8,6 @@ alerts:
       expr: up == 4
       labels:
         severity: critical
+  other-service:
+    OtherAlert:
+      expr: asd
