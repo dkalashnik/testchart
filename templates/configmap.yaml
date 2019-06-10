@@ -3,14 +3,14 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
 data:
-  {{ $root := . }}
-  {{ range $path, $bytes := .Files.Glob "files/*.yaml" }}
+  {{- $root := . }}
+  {{- range $path, $bytes := .Files.Glob "files/*.yaml" }}
     {{ $path | nindent 2 }}:
     {{ $a :=  $root.Files.Get $path | fromYaml }}
     {{ range $service, $attrib := $a.alerts }}
-      {{ $service }}
+      {{ $service | nindent 4 }}
       {{ range $k, $v := $attrib }}
-        {{ $k }}   {{ $v }}
+        {{ $k | nindent 6}}: {{ $v }}
       {{ end }}
     {{ end }}
   {{ end }}

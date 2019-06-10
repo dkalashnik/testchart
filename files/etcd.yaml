@@ -1,0 +1,23 @@
+alerts:
+  etcd:
+    etcdInsufficientMembers:
+      annotations:
+        message: 'etcd cluster "{{`{{ $labels.job }}`}}": insufficient members ({{`{{ $value }}`}}).'
+      expr: sum(up{job=~".*etcd.*"} == bool 1) by (job) < ((count(up{job=~".*etcd.*"}) by (job) + 1) / 2)
+      for: 3m
+      labels:
+        severity: critical
+    etcdNoLeader:
+      annotations:
+        message: 'etcd cluster "{{`{{ $labels.job }}`}}": member {{`{{ $labels.instance }}`}} has no leader.'
+      expr: etcd_server_has_leader{job=~".*etcd.*"} == 0
+      for: 1m
+      labels:
+        severity: critical
+    etcdHighNumberOfLeaderChanges:
+      annotations:
+        message: 'etcd cluster "{{`{{ $labels.job }}`}}": instance {{`{{ $labels.instance }}`}} has seen {{`{{ $value }}`}} leader changes within the last hour.'
+      expr: rate(etcd_server_leader_changes_seen_total{job=~".*etcd.*"}[15m]) > 3
+      for: 15m
+      labels:
+        severity: warning
