@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Release.Name }}-configmap
-data:
-  {{- $service := "etcd" }}
-  {{- $alertname := "etcdInsufficientMembers" }}
-  {{ index .Values.alerts $service $alertname | toYaml}}

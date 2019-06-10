@@ -4,16 +4,20 @@ metadata:
   name: {{ .Release.Name }}-configmap
 data:
   {{- $root := . }}
-  groups:
+  {{- $result_alerts := dict }}
   {{- range $path, $bytes := .Files.Glob "files/*.yaml" }}
     {{- $alertfile :=  $root.Files.Get $path | fromYaml }}
-    {{- range $service, $attrib := $alertfile.alerts }}
-  - name: {{ $service -}}
+    {{- $result_alerts = merge $alertfile $result_alerts}}
+  {{- end }}
+  {{- $result_alerts = merge $.Values.alerts $result_alerts.alerts }}
+  groups:
+  {{- range $service, $attrib := $result_alerts }}
+    {{- if index $.Values.alert_flags $service }}
+  - name: {{ $service }}
     rules:
       {{- range $alertname, $alertvalues := $attrib }}
-        {{ $override := index $.Values.alerts $service $alertname}}
     - alert: {{ $alertname -}}
-        {{ merge $override $alertvalues | toYaml | nindent 6 -}}
+        {{ $alertvalues | toYaml | nindent 6 -}}
       {{- end }}
     {{- end }}
   {{- end }}

@@ -11,3 +11,8 @@ alerts:
   other-service:
     OtherAlert:
       expr: asd
+alert_flags:
+  etcd: false
+  kubernetes-system: true
+  kubernetes-absent: true
+  other-service: false
