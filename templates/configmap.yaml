@@ -5,12 +5,12 @@ metadata:
 data:
   {{ $root := . }}
   {{ range $path, $bytes := .Files.Glob "files/*.yaml" }}
-  {{ $path | nindent 2 }}:
-  {{ $a :=  $root.Files.Get $path | fromYaml }}
-  {{ range $service, $attrib := $a.alerts }}
-  {{ $service }}
-  {{ range $k, $v := $attrib }}
-  {{ $k }}   {{ $v }}
-  {{ end }}
-  {{ end }}
+    {{ $path | nindent 2 }}:
+    {{ $a :=  $root.Files.Get $path | fromYaml }}
+    {{ range $service, $attrib := $a.alerts }}
+      {{ $service }}
+      {{ range $k, $v := $attrib }}
+        {{ $k }}   {{ $v }}
+      {{ end }}
+    {{ end }}
   {{ end }}
