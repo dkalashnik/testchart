@@ -11,15 +11,8 @@ data:
   - name: {{ $service -}}
     rules:
       {{- range $alertname, $alertvalues := $attrib }}
-
-        {{- if hasKey $.Values.alerts $service}}
-          {{- $overrides := default (dict ) index (index $.Values.alerts $service) $alertname }}
-        {{- else }}
-          {{- $overrides := dict }}
-        {{ end }}
-
     - alert: {{ $alertname -}}
-        {{ toYaml (merge $overrides $alertvalues) | nindent 6 -}}
+        {{ $alertvalues | toYaml | nindent 6 -}}
       {{- end }}
     {{- end }}
   {{- end }}

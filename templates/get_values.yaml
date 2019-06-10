@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  {{- $service := "etcd" }}
+  {{- $alertname := "KubeVersionMismatch" }}
+  {{ index .Values.alerts "$service" "$alertname"}}
