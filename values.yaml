@@ -1,7 +1,10 @@
 alerts:
-  nova:
-    test: test
-    newfield: test1
-  glance:
-    test: test
-    asd: asd
+  etcd:
+    etcdInsufficientMembers:
+      annotations:
+        message: 'bum-bum'
+  kubernetes-system:
+    KubeVersionMismatch:
+      expr: up == 4
+      labels:
+        severity: critical
