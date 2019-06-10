@@ -4,13 +4,15 @@ metadata:
   name: {{ .Release.Name }}-configmap
 data:
   {{- $root := . }}
+  groups:
   {{- range $path, $bytes := .Files.Glob "files/*.yaml" }}
-    {{ $path | nindent 2 }}:
-    {{ $a :=  $root.Files.Get $path | fromYaml }}
-    {{ range $service, $attrib := $a.alerts }}
-      {{ $service | nindent 4 }}
-      {{ range $k, $v := $attrib }}
-        {{ $k | nindent 6}}: {{ $v }}
-      {{ end }}
-    {{ end }}
-  {{ end }}
+    {{- $a :=  $root.Files.Get $path | fromYaml }}
+    {{- range $service, $attrib := $a.alerts }}
+  - name: {{ $service -}}
+    rules:
+      {{- range $alertname, $alertvalues := $attrib }}
+    - alert: {{ $alertname -}}
+      {{ $alertvalues | toYaml | nindent 6 -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
